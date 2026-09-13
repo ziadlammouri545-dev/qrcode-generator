@@ -36,3 +36,11 @@ test("GET /qr without text returns 400", async () => {
   const data = await res.json();
   assert.match(data.error, /required/);
 });
+
+test("GET /qr?format=svg returns an svg", async () => {
+  const res = await fetch(base + "/qr?format=svg&text=" + encodeURIComponent("https://github.com"));
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get("content-type"), /image\/svg\+xml/);
+  const body = await res.text();
+  assert.match(body, /^<svg/);
+});

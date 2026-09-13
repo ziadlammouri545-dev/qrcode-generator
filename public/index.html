@@ -13,153 +13,217 @@
     <style>
       * { box-sizing: border-box; }
       :root {
-        --paper: #f2f3f5;
-        --card: #ffffff;
-        --ink: #17181c;
-        --muted: #6b7078;
-        --line: #dfe1e5;
-        --teal: #0f9d8f;
+        --paper: #141619;
+        --card: #1d1f24;
+        --ink: #f2f3f5;
+        --muted: #9aa0a8;
+        --line: #2a2d34;
+        --line-strong: #383c44;
+        --teal: #16a99c;
         --apricot: #fb923c;
       }
       body {
         margin: 0;
         min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 32px 16px;
-        background: var(--paper);
+        padding: 40px 16px;
         color: var(--ink);
         font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
         font-size: 14px;
+        background-color: var(--paper);
+        background-image:
+          radial-gradient(rgba(242, 243, 245, 0.06) 1px, transparent 1px),
+          radial-gradient(520px 320px at 12% 0%, rgba(22, 169, 156, 0.09), transparent 70%),
+          radial-gradient(560px 380px at 92% 100%, rgba(251, 146, 60, 0.09), transparent 70%);
+        background-size: 22px 22px, 100% 100%, 100% 100%;
+        display: flex;
+        justify-content: center;
       }
       .wrap {
         width: 100%;
-        max-width: 420px;
+        max-width: 780px;
       }
-      .top {
+      header {
         display: flex;
         align-items: baseline;
+        justify-content: center;
         gap: 10px;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
       }
-      .top .dot {
-        width: 8px;
-        height: 8px;
+      header .dot {
+        width: 9px;
+        height: 9px;
         border-radius: 50%;
         background: var(--teal);
         align-self: center;
+        box-shadow: 0 0 0 4px rgba(22, 169, 156, 0.18);
       }
-      .top h1 {
+      header h1 {
         margin: 0;
         font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 26px;
+        font-size: 40px;
         font-weight: 700;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
       }
-      p.sub {
-        margin: 0 0 28px;
+      p.sub { margin: 0 0 28px; color: var(--muted); text-align: center; }
+
+      .board {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 14px;
+      }
+      .tile {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .tile.full { grid-column: 1 / -1; }
+      .tile h2 {
+        margin: 0 0 12px;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
         color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
-      label {
+
+      input {
+        width: 100%;
+        padding: 13px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        color: var(--ink);
+        background: var(--paper);
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+      }
+      input::placeholder { color: #6f767f; }
+      input:focus {
+        outline: none;
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(22, 169, 156, 0.18);
+      }
+
+      .preview {
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--paper);
+        border: 1px dashed var(--line-strong);
+        border-radius: 10px;
+      }
+      .preview img {
         display: block;
-        font-size: 12px;
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        image-rendering: pixelated;
+      }
+      .preview.placeholder { color: #6f767f; border-style: dashed; }
+
+      .settings { display: flex; flex-direction: column; gap: 16px; }
+      .group label {
+        display: block;
+        font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--muted);
         margin-bottom: 8px;
       }
-      input {
-        width: 100%;
-        padding: 12px 14px;
-        font-size: 15px;
-        font-family: inherit;
-        color: var(--ink);
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 10px;
-      }
-      input::placeholder { color: #a6abb3; }
-      input:focus {
-        outline: none;
-        border-color: var(--teal);
-        box-shadow: 0 0 0 3px rgba(15, 157, 143, 0.15);
-      }
-      .row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 18px;
-      }
-      .row .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
       .swatches {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         gap: 8px;
       }
       .swatch {
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
-        border: 2px solid transparent;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid var(--line-strong);
         cursor: pointer;
         padding: 0;
+        position: relative;
       }
-      .swatch[data-color="#17181c"] { background: var(--ink); }
-      .swatch[data-color="#0f9d8f"] { background: var(--teal); }
-      .swatch[data-color="#fb923c"] { background: var(--apricot); }
-      .swatch.sel { border-color: var(--card); box-shadow: 0 0 0 2px var(--ink); }
-      .swatch[data-color="#0f9d8f"].sel { box-shadow: 0 0 0 2px var(--teal); }
-      .swatch[data-color="#fb923c"].sel { box-shadow: 0 0 0 2px var(--apricot); }
-      .stage {
-        margin-top: 18px;
-        min-height: 264px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        transition: background 150ms ease;
+      .swatch[data-color="#e8eaed"] { background: #e8eaed; }
+      .swatch[data-color="#16a99c"] { background: #16a99c; }
+      .swatch[data-color="#fb923c"] { background: #fb923c; }
+      .swatch[data-color="#ffd166"] { background: #ffd166; }
+      .swatch[data-color="#fa6e9a"] { background: #fa6e9a; }
+      .swatch[data-color="#5b9fff"] { background: #5b9fff; }
+      .swatch.sel { border-color: transparent; box-shadow: 0 0 0 2px var(--line-strong), 0 0 0 4px var(--teal); outline: none; }
+
+      .seg {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        gap: 4px;
+        background: var(--paper);
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        padding: 4px;
       }
-      .stage img {
-        display: block;
-        width: 220px;
-        height: 220px;
-        image-rendering: pixelated;
-      }
-      .stage.no-qr { color: #a6abb3; }
-      .bar {
-        margin-top: 12px;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-      }
-      .status {
+      .seg button {
+        font-family: inherit;
         font-size: 13px;
+        font-weight: 600;
         color: var(--muted);
-        margin-right: auto;
+        background: transparent;
+        border: none;
+        border-radius: 7px;
+        padding: 8px 0;
+        cursor: pointer;
       }
-      .status.ok { color: var(--teal); }
-      button.dl {
+      .seg button.sel { background: var(--line-strong); color: var(--ink); }
+
+      .actions {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .status { font-size: 13px; color: var(--muted); margin-right: auto; }
+      .status.done { color: var(--teal); }
+      button.ghost {
         font-family: inherit;
         font-size: 14px;
         font-weight: 600;
-        color: #fff;
-        background: var(--teal);
-        border: none;
+        color: var(--ink);
+        background: transparent;
+        border: 1px solid var(--line-strong);
         border-radius: 10px;
         padding: 10px 18px;
         cursor: pointer;
-        display: none;
+        transition: background 120ms ease, border-color 120ms ease;
+      }
+      button.ghost:hover { border-color: var(--muted); background: var(--line); }
+      button.primary {
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: #08110f;
+        background: var(--teal);
+        border: none;
+        border-radius: 10px;
+        padding: 11px 20px;
+        cursor: pointer;
         transition: background 120ms ease;
       }
-      button.dl:hover { background: #0b7f74; }
-      button.dl:active { transform: translateY(1px); }
-      button.dl:focus-visible, .swatch:focus-visible {
-        outline: 2px solid var(--ink);
+      button.primary:hover { background: #1fbfb0; }
+      button.primary:active { transform: translateY(1px); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      button:focus-visible {
+        outline: 2px solid var(--teal);
         outline-offset: 2px;
+      }
+
+      @media (max-width: 640px) {
+        .board { grid-template-columns: 1fr; }
+        header h1 { font-size: 30px; }
+        .actions { flex-wrap: wrap; }
+        .status { width: 100%; }
       }
       @media (prefers-reduced-motion: reduce) {
         * { transition: none !important; }
@@ -168,85 +232,142 @@
   </head>
   <body>
     <main class="wrap">
-      <div class="top">
+      <header>
         <span class="dot"></span>
         <h1>qr generator</h1>
-      </div>
-      <p class="sub">paste a link, get a png to share anywhere</p>
+      </header>
+      <p class="sub">paste a link, grab the code, share it anywhere</p>
 
-      <label for="url">Link</label>
-      <input id="url" type="text" placeholder="https://..." autocomplete="off" spellcheck="false" />
+      <div class="board">
+        <section class="tile full">
+          <h2>link</h2>
+          <input id="url" type="text" placeholder="write your link" autocomplete="off" spellcheck="false" />
+        </section>
 
-      <div class="row">
-        <span class="label">Color</span>
-        <div class="swatches" id="swatches">
-          <button class="swatch sel" data-color="#17181c" aria-label="ink" type="button" aria-pressed="true"></button>
-          <button class="swatch" data-color="#0f9d8f" aria-label="teal" type="button" aria-pressed="false"></button>
-          <button class="swatch" data-color="#fb923c" aria-label="apricot" type="button" aria-pressed="false"></button>
-        </div>
-      </div>
+        <section class="tile">
+          <h2>code</h2>
+          <div class="preview placeholder" id="preview">the code shows up here</div>
+        </section>
 
-      <div class="stage no-qr" id="stage">the qr shows up here</div>
+        <section class="tile settings">
+          <div class="group">
+            <label>Color of qr code</label>
+            <div class="swatches" id="swatches">
+              <button class="swatch sel" data-color="#e8eaed" aria-label="light" type="button" aria-pressed="true"></button>
+              <button class="swatch" data-color="#16a99c" aria-label="teal" type="button" aria-pressed="false"></button>
+              <button class="swatch" data-color="#fb923c" aria-label="apricot" type="button" aria-pressed="false"></button>
+              <button class="swatch" data-color="#ffd166" aria-label="yellow" type="button" aria-pressed="false"></button>
+              <button class="swatch" data-color="#fa6e9a" aria-label="pink" type="button" aria-pressed="false"></button>
+              <button class="swatch" data-color="#5b9fff" aria-label="blue" type="button" aria-pressed="false"></button>
+            </div>
+          </div>
+          <div class="group">
+            <label>Size</label>
+            <div class="seg" id="sizes">
+              <button type="button" data-size="300" aria-pressed="false">s</button>
+              <button type="button" data-size="500" aria-pressed="false">m</button>
+              <button type="button" data-size="800" aria-pressed="false">l</button>
+            </div>
+          </div>
+          <div class="group">
+            <label>Format</label>
+            <div class="seg" id="formats">
+              <button type="button" data-format="png" aria-pressed="false">png</button>
+              <button type="button" data-format="svg" aria-pressed="false">svg</button>
+            </div>
+          </div>
+        </section>
 
-      <div class="bar">
-        <span class="status" id="status"></span>
-        <button class="dl" id="dl" type="button">download png</button>
+        <section class="tile actions">
+          <span class="status" id="status">waiting for a link</span>
+          <button class="primary" id="dl" type="button" disabled>download</button>
+        </section>
       </div>
     </main>
 
     <script>
       const input = document.getElementById("url");
-      const stage = document.getElementById("stage");
+      const preview = document.getElementById("preview");
       const status = document.getElementById("status");
       const dl = document.getElementById("dl");
       const swatches = document.querySelectorAll(".swatch");
+      const sizeBtns = document.querySelectorAll("#sizes button");
+      const formatBtns = document.querySelectorAll("#formats button");
 
-      let dark = "#17181c";
+      let dark = "#e8eaed";
+      let size = 300;
+      let format = "png";
+
+      function pick(set, btn) {
+        set.forEach((b) => {
+          b.classList.remove("sel");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("sel");
+        btn.setAttribute("aria-pressed", "true");
+      }
 
       swatches.forEach((s) =>
         s.addEventListener("click", () => {
-          swatches.forEach((x) => {
-            x.classList.remove("sel");
-            x.setAttribute("aria-pressed", "false");
-          });
-          s.classList.add("sel");
-          s.setAttribute("aria-pressed", "true");
+          pick(swatches, s);
           dark = s.dataset.color;
           render();
         })
       );
+      sizeBtns.forEach((b) =>
+        b.addEventListener("click", () => {
+          pick(sizeBtns, b);
+          size = Number(b.dataset.size);
+          render(false);
+        })
+      );
+      formatBtns.forEach((b) =>
+        b.addEventListener("click", () => {
+          pick(formatBtns, b);
+          format = b.dataset.format;
+          render(false);
+        })
+      );
+      sizeBtns[1].classList.add("sel");
+      sizeBtns[1].setAttribute("aria-pressed", "true");
+      formatBtns[0].classList.add("sel");
+      formatBtns[0].setAttribute("aria-pressed", "true");
 
       let timer;
       input.addEventListener("input", () => {
         clearTimeout(timer);
-        timer = setTimeout(render, 180);
+        timer = setTimeout(render, 150);
       });
 
-      function render() {
+      function q(text) {
+        return `text=${encodeURIComponent(text)}&dark=${encodeURIComponent(dark)}&light=${encodeURIComponent("#141619")}&size=${size}&format=${format}`;
+      }
+
+      function render(updateStatus = true) {
         const text = input.value.trim();
         if (!text) {
-          stage.className = "stage no-qr";
-          stage.textContent = "the qr shows up here";
-          status.textContent = "";
+          preview.className = "preview placeholder";
+          preview.textContent = "the code shows up here";
+          status.textContent = "waiting for a link";
           status.className = "status";
-          dl.style.display = "none";
+          dl.disabled = true;
           return;
         }
-        const q = `text=${encodeURIComponent(text)}&dark=${encodeURIComponent(dark)}&size=300`;
-        stage.className = "stage";
-        stage.innerHTML = `<img src="/qr?${q}" alt="qr for ${text}" />`;
-        status.textContent = "ready to download";
-        status.className = "status ok";
-        dl.style.display = "inline-block";
+        preview.className = "preview";
+        preview.innerHTML = `<img src="/qr?${q(text)}&size=280" alt="qr for ${text}" />`;
+        if (updateStatus) {
+          status.textContent = `ready · ${size}px · ${format}`;
+          status.className = "status done";
+        }
+        dl.disabled = false;
       }
 
       dl.addEventListener("click", () => {
         const text = input.value.trim();
         if (!text) return;
-        const q = `text=${encodeURIComponent(text)}&dark=${encodeURIComponent(dark)}&size=300`;
         const a = document.createElement("a");
-        a.href = `/qr?${q}`;
-        a.download = "qr.png";
+        a.href = `/qr?${q(text)}`;
+        a.download = `qr.${format}`;
         a.click();
       });
     </script>

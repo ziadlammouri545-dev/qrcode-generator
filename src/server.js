@@ -10,6 +10,8 @@ const app = express();
 
 app.use(express.static(path.join(dirname, "..", "public")));
 
+const VALID_EC = ["L", "M", "Q", "H"];
+
 app.get("/qr", async (req, res) => {
   const text = String(req.query.text || "").trim();
   if (!text) {
@@ -19,14 +21,20 @@ app.get("/qr", async (req, res) => {
   const size = Math.min(Math.max(Number(req.query.size) || 300, 100), 1000);
   const dark = String(req.query.dark || "#17181c");
   const light = String(req.query.light || "#ffffff");
+  const format = req.query.format === "svg" ? "svg" : "png";
+  const ec = VALID_EC.includes(String(req.query.ec).toUpperCase()) ? String(req.query.ec).toUpperCase() : "M";
+  const options = {
+    margin: 2,
+    errorCorrectionLevel: ec,
+    color: { dark, light },
+  };
 
   try {
-    const png = await qrcode.toBuffer(text, {
-      width: size,
-      margin: 2,
-      errorCorrectionLevel: "M",
-      color: { dark, light },
-    });
+    if (format === "svg") {
+      const svg = await qrcode.toString(text, { ...options, type: "svg", width: size });
+      return res.type("svg").send(svg);
+    }
+    const png = await qrcode.toBuffer(text, { ...options, width: size });
     res.type("png").send(png);
   } catch {
     res.status(400).json({ error: "could not generate a qr for that input" });
