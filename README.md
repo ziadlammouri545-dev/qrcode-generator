@@ -1,6 +1,9 @@
 # qr generator
 
-Paste a link, get a QR PNG to download or share.
+Paste a link, get a QR PNG or SVG to download or share.
+
+Live: https://qrcode-generator-lyart-three.vercel.app
+Repo: https://github.com/ziadlammouri545-dev/qrcode-generator
 
 ## run
 
