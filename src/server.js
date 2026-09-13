@@ -41,10 +41,14 @@ app.get("/qr", async (req, res) => {
   }
 });
 
-if (!process.env.TEST_MODE) {
+const runDirect = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+export default app;
+
+export { app };
+
+if (runDirect) {
   app.listen(PORT, () => {
     console.log(`listening on http://localhost:${PORT}`);
   });
 }
-
-export { app };
